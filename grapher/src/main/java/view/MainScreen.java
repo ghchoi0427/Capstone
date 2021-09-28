@@ -1,7 +1,5 @@
 package view;
 
-import controller.GraphController;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,7 +15,6 @@ public class MainScreen extends JFrame {
         JTextField textAddress = new JTextField(15);
 
         btnConnect.setBounds(0, 0, 50, 50);
-        btnConnect.setMnemonic('S');
         btnConnect.addActionListener(e -> {
 
         });
@@ -27,5 +24,9 @@ public class MainScreen extends JFrame {
         container.add(panel);
 
         setVisible(true);
+    }
+
+    private void showMessage(String title, String message, int type){
+        JOptionPane.showMessageDialog(null, message,title, type);
     }
 }
