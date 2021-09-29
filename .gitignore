@@ -1,3 +1,24 @@
 # Project exclude paths
 /grapher/.gradle/
 /.idea/
+/grapher/build/classes/java/main/com/intellij/uiDesigner/core/AbstractLayout.class
+/grapher/build/classes/java/main/Application.class
+/grapher/build/classes/java/main/web/BootWebApplication.class
+/grapher/build/classes/java/main/web/controller/Client.class
+/grapher/build/classes/java/main/web/controller/CSVHandler.class
+/grapher/build/classes/java/main/com/intellij/uiDesigner/core/DimensionInfo.class
+/grapher/build/classes/java/main/web/controller/GraphController.class
+/grapher/build/classes/java/main/web/view/GraphScreen.class
+/grapher/build/classes/java/main/com/intellij/uiDesigner/core/GridConstraints.class
+/grapher/build/classes/java/main/com/intellij/uiDesigner/core/GridLayoutManager.class
+/grapher/build/classes/java/main/web/controller/HomeController.class
+/grapher/build/classes/java/main/com/intellij/uiDesigner/core/HorizontalInfo.class
+/grapher/build/classes/java/main/com/intellij/uiDesigner/core/LayoutState.class
+/grapher/build/classes/java/main/web/view/MainScreen.class
+/null
+/grapher/build/tmp/compileJava/source-classes-mapping.txt
+/grapher/build/classes/java/main/com/intellij/uiDesigner/core/Spacer.class
+/grapher/build/classes/java/main/com/intellij/uiDesigner/core/SupportCode$TextWithMnemonic.class
+/grapher/build/classes/java/main/com/intellij/uiDesigner/core/SupportCode.class
+/grapher/build/classes/java/main/com/intellij/uiDesigner/core/Util.class
+/grapher/build/classes/java/main/com/intellij/uiDesigner/core/VerticalInfo.class
