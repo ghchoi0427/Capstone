@@ -1,4 +1,4 @@
-package controller;
+package web.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
