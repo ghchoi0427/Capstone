@@ -8,9 +8,13 @@ import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
+import web.controller.CSVFactory;
+import web.controller.SecondStringParser;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.util.List;
 
 public class GraphScreen extends JFrame {
 
@@ -19,7 +23,7 @@ public class GraphScreen extends JFrame {
     public GraphScreen(String title) {
         super(title);
 
-        XYDataset dataset = createDataset();
+        XYDataset dataset = createDB();
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
                 "Time Series Chart Example", // Chart
                 "time", // X-Axis Label
@@ -33,46 +37,30 @@ public class GraphScreen extends JFrame {
         setContentPane(panel);
     }
 
-    private XYDataset createDataset() {
+    private XYDataset createDB() {
         TimeSeriesCollection dataset = new TimeSeriesCollection();
 
-        TimeSeries series1 = new TimeSeries("temperature");
-        series1.add(new Day(1, 1, 2017), 50);
-        series1.add(new Day(2, 1, 2017), 40);
-        series1.add(new Day(3, 1, 2017), 45);
-        series1.add(new Day(4, 1, 2017), 30);
-        series1.add(new Day(5, 1, 2017), 50);
-        series1.add(new Day(6, 1, 2017), 45);
-        series1.add(new Day(7, 1, 2017), 60);
-        series1.add(new Day(8, 1, 2017), 45);
-        series1.add(new Day(9, 1, 2017), 55);
-        series1.add(new Day(10, 1, 2017), 48);
-        series1.add(new Day(11, 1, 2017), 60);
-        series1.add(new Day(12, 1, 2017), 45);
-        series1.add(new Day(13, 1, 2017), 65);
-        series1.add(new Day(14, 1, 2017), 45);
-        series1.add(new Day(15, 1, 2017), 55);
-        dataset.addSeries(series1);
+        List<String[]> data = null;
+        try {
+            data = CSVFactory.getCSV();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        TimeSeries series2 = new TimeSeries("humidity");
-        series2.add(new Day(1, 1, 2017), 40);
-        series2.add(new Day(2, 1, 2017), 35);
-        series2.add(new Day(3, 1, 2017), 26);
-        series2.add(new Day(4, 1, 2017), 45);
-        series2.add(new Day(5, 1, 2017), 40);
-        series2.add(new Day(6, 1, 2017), 35);
-        series2.add(new Day(7, 1, 2017), 45);
-        series2.add(new Day(8, 1, 2017), 48);
-        series2.add(new Day(9, 1, 2017), 31);
-        series2.add(new Day(10, 1, 2017), 32);
-        series2.add(new Day(11, 1, 2017), 21);
-        series2.add(new Day(12, 1, 2017), 35);
-        series2.add(new Day(13, 1, 2017), 10);
-        series2.add(new Day(14, 1, 2017), 25);
-        series2.add(new Day(15, 1, 2017), 15);
-        dataset.addSeries(series2);
+        TimeSeries seriesTemp = new TimeSeries("temperature");
+        for (String[] entity : data) {
+            seriesTemp.add(SecondStringParser.StringToSecond(entity[0]), Integer.parseInt(entity[1]));
+            System.out.println(Integer.parseInt(entity[1]));
+        }
 
+        TimeSeries seriesHumid = new TimeSeries("humidity");
+        for (String[] entity : data) {
+            seriesHumid.add(SecondStringParser.StringToSecond(entity[0]), Integer.parseInt(entity[2]));
+            System.out.println(Integer.parseInt(entity[2]));
+        }
 
+        dataset.addSeries(seriesTemp);
+        dataset.addSeries(seriesHumid);
         return dataset;
     }
 }
