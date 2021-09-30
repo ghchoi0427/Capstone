@@ -12,9 +12,6 @@ public class CSVFactory {
     static final String PATH = "./grapher/src/main/java/web/model/sensor.csv";
     public static void createCsv() throws IOException {
         CSVWriter writer = new CSVWriter(new FileWriter(PATH));
-        String[] entries = "Date#Temp#Humid".split("#");
-        writer.writeNext(entries);
-
         writer.close();
     }
 
@@ -42,5 +39,10 @@ public class CSVFactory {
             }
             System.out.println();
         }
+    }
+
+    public static List<String[]> getCSV() throws IOException {
+        CSVReader reader = new CSVReader(new FileReader(PATH));
+        return reader.readAll();
     }
 }
