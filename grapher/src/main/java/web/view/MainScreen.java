@@ -18,7 +18,10 @@ public class MainScreen extends JFrame {
 
         btnConnect.addActionListener(e -> SwingUtilities.invokeLater(MainScreen::showGraph));
 
-        btnServer.addActionListener(e -> BootWebApplication.main(new String[]{}));
+        btnServer.addActionListener(e -> {
+            BootWebApplication.main(new String[]{});
+            showMessage("Notification","Server has been started",JOptionPane.INFORMATION_MESSAGE);
+        });
 
         panel.add(btnConnect);
         panel.add(btnServer);
@@ -27,12 +30,11 @@ public class MainScreen extends JFrame {
         setVisible(true);
     }
 
-    public static void showGraph(){
+    public static void showGraph() {
         GraphScreen graph = new GraphScreen("Time Series Chart");
         graph.setSize(800, 400);
         graph.setLocationRelativeTo(null);
         graph.setVisible(true);
-        //graph.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     private void showMessage(String title, String message, int type) {
