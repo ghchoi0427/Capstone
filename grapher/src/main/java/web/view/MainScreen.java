@@ -1,5 +1,7 @@
 package web.view;
 
+import web.BootWebApplication;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,26 +13,26 @@ public class MainScreen extends JFrame {
 
         JPanel panel = new JPanel();
         Container container = this.getContentPane();
-        JButton btnConnect = new JButton("connect");
-        JTextField textAddress = new JTextField(15);
+        JButton btnConnect = new JButton("show graph");
+        JButton btnServer = new JButton("start server");
 
-        btnConnect.setBounds(0, 0, 50, 50);
-        btnConnect.addActionListener(e -> {
-            SwingUtilities.invokeLater(() -> {
-                GraphScreen graph = new GraphScreen("Time Series Chart");
-                graph.setSize(800, 400);
-                graph.setLocationRelativeTo(null);
-                graph.setVisible(true);
-                graph.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            });
-            setVisible(false);
-        });
+        btnConnect.addActionListener(e -> SwingUtilities.invokeLater(MainScreen::showGraph));
 
-        panel.add(textAddress);
+        btnServer.addActionListener(e -> BootWebApplication.main(new String[]{}));
+
         panel.add(btnConnect);
+        panel.add(btnServer);
         container.add(panel);
 
         setVisible(true);
+    }
+
+    public static void showGraph(){
+        GraphScreen graph = new GraphScreen("Time Series Chart");
+        graph.setSize(800, 400);
+        graph.setLocationRelativeTo(null);
+        graph.setVisible(true);
+        //graph.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     private void showMessage(String title, String message, int type) {
