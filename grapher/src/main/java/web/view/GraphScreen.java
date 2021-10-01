@@ -4,7 +4,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
@@ -25,7 +24,7 @@ public class GraphScreen extends JFrame {
 
         XYDataset dataset = createDB();
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
-                "Time Series Chart Example", // Chart
+                "temperature  & humidity chart", // Chart
                 "time", // X-Axis Label
                 "temperature", // Y-Axis Label
                 dataset);
@@ -34,6 +33,15 @@ public class GraphScreen extends JFrame {
         plot.setBackgroundPaint(new Color(255, 228, 196));
 
         ChartPanel panel = new ChartPanel(chart);
+        panel.setBounds(0,0,500,400);
+        JButton btnRefresh = new JButton("Refresh");
+        btnRefresh.setBounds(50,10,100,20);
+        btnRefresh.addActionListener(e -> {
+         setVisible(false);
+         MainScreen.showGraph();
+        });
+        panel.setLayout(null);
+        panel.add(btnRefresh);
         setContentPane(panel);
     }
 
@@ -50,13 +58,11 @@ public class GraphScreen extends JFrame {
         TimeSeries seriesTemp = new TimeSeries("temperature");
         for (String[] entity : data) {
             seriesTemp.add(SecondStringParser.StringToSecond(entity[0]), Integer.parseInt(entity[1]));
-            System.out.println(Integer.parseInt(entity[1]));
         }
 
         TimeSeries seriesHumid = new TimeSeries("humidity");
         for (String[] entity : data) {
             seriesHumid.add(SecondStringParser.StringToSecond(entity[0]), Integer.parseInt(entity[2]));
-            System.out.println(Integer.parseInt(entity[2]));
         }
 
         dataset.addSeries(seriesTemp);
