@@ -19,8 +19,12 @@ public class MainScreen extends JFrame {
         btnConnect.addActionListener(e -> SwingUtilities.invokeLater(MainScreen::showGraph));
 
         btnServer.addActionListener(e -> {
-            BootWebApplication.main(new String[]{});
-            showMessage("Notification","Server has been started",JOptionPane.INFORMATION_MESSAGE);
+            try {
+                BootWebApplication.main(new String[]{});
+                showMessage("Notification", "Server has been started", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception ex) {
+                showMessage("Warning", "error: " + ex.getMessage(), JOptionPane.WARNING_MESSAGE);
+            }
         });
 
         panel.add(btnConnect);
