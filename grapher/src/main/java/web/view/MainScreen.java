@@ -20,7 +20,7 @@ public class MainScreen extends JFrame {
 
         btnServer.addActionListener(e -> {
             try {
-                BootWebApplication.main(new String[]{});
+                BootWebApplication.main(new String[]{"start"});
                 showMessage("Notification", "Server has been started", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception ex) {
                 showMessage("Warning", "error: " + ex.getMessage(), JOptionPane.WARNING_MESSAGE);
