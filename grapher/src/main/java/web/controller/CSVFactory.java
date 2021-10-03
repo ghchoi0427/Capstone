@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class CSVFactory {
-    static final String PATH = "./grapher/src/main/java/web/model/sensor.csv";
+    static final String PATH = "D:/sensor.csv";
     public static void createCsv() throws IOException {
         CSVWriter writer = new CSVWriter(new FileWriter(PATH));
         writer.close();
