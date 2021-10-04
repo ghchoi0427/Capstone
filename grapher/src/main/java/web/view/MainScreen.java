@@ -23,7 +23,7 @@ public class MainScreen extends JFrame {
                 BootWebApplication.main(new String[]{"start"});
                 showMessage("Notification", "Server has been started", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception ex) {
-                showMessage("Warning", "error: " + ex.getMessage(), JOptionPane.WARNING_MESSAGE);
+                showMessage("Warning", ex.getMessage(), JOptionPane.WARNING_MESSAGE);
             }
         });
 
