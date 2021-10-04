@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -28,7 +29,7 @@ public class HomeController {
         List<Integer> returnList = getDataAtTime(returnTemp, returnHumid);
         returnTemp = returnList.get(0);
         returnHumid = returnList.get(1);
-        System.out.println("[GET]: temperature: "+temp+","+"humidity: "+humidity);
+        System.out.println("["+new Date()+"]: temperature: "+temp+","+"humidity: "+humidity);
         return new ResponseEntity<>(returnTemp + " / " + returnHumid, HttpStatus.OK);
     }
 
