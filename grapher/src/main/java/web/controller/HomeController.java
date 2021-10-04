@@ -30,7 +30,7 @@ public class HomeController {
         returnTemp = returnList.get(0);
         returnHumid = returnList.get(1);
         System.out.println("["+new Date()+"]: temperature: "+temp+","+"humidity: "+humidity);
-        return new ResponseEntity<>(returnTemp + " / " + returnHumid, HttpStatus.OK);
+        return new ResponseEntity<>(returnTemp + "/" + returnHumid, HttpStatus.OK);
     }
 
     private List<Integer> getDataAtTime(int returnTemp, int returnHumid) {
