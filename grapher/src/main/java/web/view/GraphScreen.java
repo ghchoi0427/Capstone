@@ -3,7 +3,9 @@ package web.view;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.*;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
@@ -22,30 +24,41 @@ public class GraphScreen extends JFrame {
     public GraphScreen(String title) {
         super(title);
 
-        XYDataset dataset = createDB();
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
                 "temperature  & humidity chart", // Chart
                 "time", // X-Axis Label
-                "temperature", // Y-Axis Label
-                dataset);
+                "", // Y-Axis Label
+                null);
 
         XYPlot plot = (XYPlot) chart.getPlot();
         plot.setBackgroundPaint(new Color(255, 228, 196));
+        final NumberAxis humidityAxis = new NumberAxis("humidity(%)");
+        final NumberAxis temperatureAxis = new NumberAxis("temperature(°C)");
+        humidityAxis.setAutoRangeIncludesZero(false);
+        temperatureAxis.setAutoRangeIncludesZero(false);
+        plot.setRangeAxis(0, temperatureAxis);
+        plot.setRangeAxis(1, humidityAxis);
+        plot.setDataset(0, createTempDataset());
+        plot.setDataset(1, createHumidDataset());
+        plot.mapDatasetToRangeAxis(0, 0);
+        plot.mapDatasetToRangeAxis(1, 1);
+        plot.setRenderer(0, new XYLineAndShapeRenderer());
+        plot.setRenderer(1, new XYLineAndShapeRenderer());
 
         ChartPanel panel = new ChartPanel(chart);
-        panel.setBounds(0,0,500,400);
+        panel.setBounds(0, 0, 500, 400);
         JButton btnRefresh = new JButton("Refresh");
-        btnRefresh.setBounds(50,10,100,20);
+        btnRefresh.setBounds(50, 10, 100, 20);
         btnRefresh.addActionListener(e -> {
-         setVisible(false);
-         MainScreen.showGraph();
+            setVisible(false);
+            MainScreen.showGraph();
         });
         panel.setLayout(null);
         panel.add(btnRefresh);
         setContentPane(panel);
     }
 
-    private XYDataset createDB() {
+    private XYDataset createTempDataset() {
         TimeSeriesCollection dataset = new TimeSeriesCollection();
 
         List<String[]> data = null;
@@ -60,12 +73,25 @@ public class GraphScreen extends JFrame {
             seriesTemp.add(SecondStringParser.StringToSecond(entity[0]), Integer.parseInt(entity[1]));
         }
 
+        dataset.addSeries(seriesTemp);
+        return dataset;
+    }
+
+    private XYDataset createHumidDataset() {
+        TimeSeriesCollection dataset = new TimeSeriesCollection();
+
+        List<String[]> data = null;
+        try {
+            data = CSVFactory.getCSV();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         TimeSeries seriesHumid = new TimeSeries("humidity");
         for (String[] entity : data) {
             seriesHumid.add(SecondStringParser.StringToSecond(entity[0]), Integer.parseInt(entity[2]));
         }
 
-        dataset.addSeries(seriesTemp);
         dataset.addSeries(seriesHumid);
         return dataset;
     }
