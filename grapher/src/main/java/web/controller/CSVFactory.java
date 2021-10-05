@@ -21,9 +21,7 @@ public class CSVFactory {
         List<String[]> temp = reader.readAll();
 
         CSVWriter writer = new CSVWriter(new FileWriter(PATH));
-        for (String[] line : temp) {
-            writer.writeNext(line);
-        }
+        temp.forEach(writer::writeNext);
         writer.writeNext(nextLine);
 
         writer.close();
