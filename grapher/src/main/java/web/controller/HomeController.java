@@ -19,6 +19,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class HomeController {
+    private boolean isDataSent = false;
 
     @GetMapping
     public ResponseEntity<String> getData(@RequestParam(value = "temp") int temp, @RequestParam(value = "humidity") int humidity) throws IOException {
@@ -29,21 +30,28 @@ public class HomeController {
         List<Integer> returnList = getDataAtTime(returnTemp, returnHumid);
         returnTemp = returnList.get(0);
         returnHumid = returnList.get(1);
-        System.out.println("["+new Date()+"]: temperature: "+temp+","+"humidity: "+humidity);
+        System.out.println("[" + new Date() + "]: temperature: " + temp + "," + "humidity: " + humidity);
         return new ResponseEntity<>(returnTemp + "/" + returnHumid, HttpStatus.OK);
     }
 
     private List<Integer> getDataAtTime(int returnTemp, int returnHumid) {
         LocalTime now = LocalTime.now();
         if (now.getHour() == 6 || now.getHour() == 11 || now.getHour() == 16) {
-            String requestHour = String.format("%02d", (now.getHour() - 1));
-            String json = APIHandler.sendRequest(getDate(), requestHour+"00");
-            try {
-                returnTemp = (int) Float.parseFloat(JSONHandler.getTemperature(json));
-                returnHumid = Integer.parseInt(JSONHandler.getHumidity(json));
-            } catch (org.json.simple.parser.ParseException e) {
-                System.out.println(e.getMessage());
+            if (!isDataSent) {
+
+                String requestHour = String.format("%02d", (now.getHour() - 1));
+                String json = APIHandler.sendRequest(getDate(), requestHour + "00");
+                try {
+                    returnTemp = (int) Float.parseFloat(JSONHandler.getTemperature(json));
+                    returnHumid = Integer.parseInt(JSONHandler.getHumidity(json));
+                } catch (org.json.simple.parser.ParseException e) {
+                    System.out.println(e.getMessage());
+                }
+
+                isDataSent = true;
             }
+        } else {
+            isDataSent = false;
         }
         List<Integer> result = new ArrayList<>();
         result.add(returnTemp);
