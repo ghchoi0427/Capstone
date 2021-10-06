@@ -16,6 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class GraphScreen extends JFrame {
 
@@ -69,7 +70,7 @@ public class GraphScreen extends JFrame {
         }
 
         TimeSeries seriesTemp = new TimeSeries("temperature");
-        for (String[] entity : data) {
+        for (String[] entity : Objects.requireNonNull(data)) {
             seriesTemp.add(SecondStringParser.StringToSecond(entity[0]), Integer.parseInt(entity[1]));
         }
 
@@ -88,7 +89,7 @@ public class GraphScreen extends JFrame {
         }
 
         TimeSeries seriesHumid = new TimeSeries("humidity");
-        for (String[] entity : data) {
+        for (String[] entity : Objects.requireNonNull(data)) {
             seriesHumid.add(SecondStringParser.StringToSecond(entity[0]), Integer.parseInt(entity[2]));
         }
 
