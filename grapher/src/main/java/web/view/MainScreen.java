@@ -36,7 +36,7 @@ public class MainScreen extends JFrame {
 
     public static void showGraph() {
         GraphScreen graph = new GraphScreen("Time Series Chart");
-        graph.setSize(800, 400);
+        graph.setExtendedState(JFrame.MAXIMIZED_BOTH);
         graph.setLocationRelativeTo(null);
         graph.setVisible(true);
     }
