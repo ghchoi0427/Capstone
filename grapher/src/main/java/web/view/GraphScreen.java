@@ -43,8 +43,8 @@ public class GraphScreen extends JFrame {
         plot.setDataset(1, createHumidDataset());
         plot.mapDatasetToRangeAxis(0, 0);
         plot.mapDatasetToRangeAxis(1, 1);
-        plot.setRenderer(0, new XYLineAndShapeRenderer());
-        plot.setRenderer(1, new XYLineAndShapeRenderer());
+        plot.setRenderer(0, new StandardXYItemRenderer());
+        plot.setRenderer(1, new StandardXYItemRenderer());
 
         ChartPanel panel = new ChartPanel(chart);
         panel.setBounds(0, 0, 500, 400);
