@@ -26,11 +26,13 @@ public class HomeController {
         int returnTemp = -1;
         int returnHumid = -1;
 
-        CSVFactory.addData(new String[]{new Second().toString(), String.valueOf(temp), String.valueOf(humidity)});
-        List<Integer> returnList = getDataAtTime(returnTemp, returnHumid);
-        returnTemp = returnList.get(0);
-        returnHumid = returnList.get(1);
-        System.out.println("[" + new Date() + "]: temperature: " + temp + "," + "humidity: " + humidity);
+        if (validateParam(temp, humidity)) {
+            CSVFactory.addData(new String[]{new Second().toString(), String.valueOf(temp), String.valueOf(humidity)});
+            List<Integer> returnList = getDataAtTime(returnTemp, returnHumid);
+            returnTemp = returnList.get(0);
+            returnHumid = returnList.get(1);
+        }
+        System.out.println("[" + new Date() + "]: temperature: " + temp + ", " + "humidity: " + humidity);
         return new ResponseEntity<>(returnTemp + "/" + returnHumid, HttpStatus.OK);
     }
 
@@ -64,6 +66,19 @@ public class HomeController {
         LocalDate now = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         return now.format(formatter);
+    }
+
+    private boolean validateParam(int temp, int humid) {
+
+        if (temp == -1 && humid == -1) {
+            return false;
+        }
+
+        if (humid < 0 || humid > 100) {
+            return false;
+        }
+
+        return true;
     }
 
 }
