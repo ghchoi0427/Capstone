@@ -10,7 +10,7 @@ public class Modulator {
         return hour % 6 == 0;
     }
 
-    public int modulateTargetTemp(int lowestTemp, int targetTemp) {
+    public static void modulateTargetTemp(int lowestTemp, int targetTemp) {
 
         if (lowestTemp <= 0) {
             targetTemp += 2;
@@ -23,9 +23,6 @@ public class Modulator {
         } else if (lowestTemp <= 20) {
             targetTemp += 6;
         }
-
-        return targetTemp;
     }
-
 
 }
