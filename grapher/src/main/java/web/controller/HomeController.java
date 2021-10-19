@@ -38,7 +38,7 @@ public class HomeController {
 
     private List<Integer> getDataAtTime(int returnTemp, int returnHumid) {
         LocalTime now = LocalTime.now();
-        if (now.getHour() == 6 || now.getHour() == 11 || now.getHour() == 16) {
+        if (now.getHour() == 6 || now.getHour() == 12 || now.getHour() == 18) {
             if (!isDataSent) {
 
                 String requestHour = String.format("%02d", (now.getHour() - 1));
