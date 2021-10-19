@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,9 @@ import java.util.List;
 @RequestMapping("/")
 public class HomeController {
     private boolean isDataSent = false;
+    private boolean isCalibrated = false;
+    private List<Integer> tempList = new ArrayList<>();
+    private int targetTemp = 30;
 
     @GetMapping
     public ResponseEntity<String> getData(@RequestParam(value = "temp") int temp, @RequestParam(value = "humidity") int humidity) throws IOException {
@@ -31,16 +35,20 @@ public class HomeController {
             List<Integer> returnList = getDataAtTime(returnTemp, returnHumid);
             returnTemp = returnList.get(0);
             returnHumid = returnList.get(1);
+            setTempList(temp);
+
+            if(Modulator.isDesignatedTime(LocalTime.now().getHour())){
+                calibrateTargetTemp(getLowestTemp(tempList),targetTemp);
+            }
         }
         System.out.println("[" + new Date() + "]: temperature: " + temp + ", " + "humidity: " + humidity);
-        return new ResponseEntity<>(returnTemp + "/" + returnHumid, HttpStatus.OK);
+        return new ResponseEntity<>(returnTemp + "/" + targetTemp, HttpStatus.OK);
     }
 
     private List<Integer> getDataAtTime(int returnTemp, int returnHumid) {
         LocalTime now = LocalTime.now();
-        if (now.getHour() == 6 || now.getHour() == 12 || now.getHour() == 18) {
+        if (Modulator.isDesignatedTime(now.getHour())) {
             if (!isDataSent) {
-
                 String requestHour = String.format("%02d", (now.getHour() - 1));
                 String json = APIHandler.sendRequest(getDate(), requestHour + "00");
                 try {
@@ -62,6 +70,28 @@ public class HomeController {
         return result;
     }
 
+    private void calibrateTargetTemp(int lowestTemp, int targetTemp) {
+        if (Modulator.isDesignatedTime(LocalTime.now().getHour())) {
+            if (!isCalibrated) {
+                Modulator.modulateTargetTemp(lowestTemp, targetTemp);
+                isCalibrated = true;
+            }
+        } else {
+            isCalibrated = false;
+        }
+    }
+
+    private void setTempList(int temp) {
+        tempList.add(temp);
+        if (!tempList.isEmpty() && Modulator.isDesignatedTime(LocalTime.now().getHour() - 1)) {
+            tempList.clear();
+        }
+    }
+
+    private int getLowestTemp(List<Integer> tempList) {
+        return tempList.get(tempList.indexOf(Collections.min(tempList)));
+    }
+
     private String getDate() {
         LocalDate now = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -74,7 +104,7 @@ public class HomeController {
             return false;
         }
 
-        if (humid < 0 || humid > 100) {
+        if (humid > 100) {
             return false;
         }
 
