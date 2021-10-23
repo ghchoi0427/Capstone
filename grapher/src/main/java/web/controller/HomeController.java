@@ -23,12 +23,16 @@ public class HomeController {
     private boolean isDataSent = false;
     private boolean isCalibrated = false;
     private List<Integer> tempList = new ArrayList<>();
-    private int targetTemp = 30;
+    private int targetTemp = 23;
+    int returnTemp = -1;
+    int returnHumid = -1;
+
+    int currentTemp = -1;
+    int currentHumid = -1;
 
     @GetMapping
     public ResponseEntity<String> getData(@RequestParam(value = "temp") int temp, @RequestParam(value = "humidity") int humidity) throws IOException {
-        int returnTemp = -1;
-        int returnHumid = -1;
+
 
         if (validateParam(temp, humidity)) {
             CSVFactory.addData(new String[]{new Second().toString(), String.valueOf(temp), String.valueOf(humidity)});
@@ -37,12 +41,20 @@ public class HomeController {
             returnHumid = returnList.get(1);
             setTempList(temp);
 
-            if(Modulator.isDesignatedTime(LocalTime.now().getHour())){
-                calibrateTargetTemp(getLowestTemp(tempList),targetTemp);
+            currentTemp = temp;
+            currentHumid = humidity;
+
+            if (Modulator.isDesignatedTime(LocalTime.now().getHour())) {
+                calibrateTargetTemp(getLowestTemp(tempList), targetTemp);
             }
         }
         System.out.println("[" + new Date() + "]: temperature: " + temp + ", " + "humidity: " + humidity);
         return new ResponseEntity<>(returnTemp + "/" + targetTemp, HttpStatus.OK);
+    }
+
+    @GetMapping("/sensor")
+    public ResponseEntity<String> retrieveData() {
+        return new ResponseEntity<>(currentTemp + "/" + currentHumid, HttpStatus.OK);
     }
 
     private List<Integer> getDataAtTime(int returnTemp, int returnHumid) {
