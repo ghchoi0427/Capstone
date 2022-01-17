@@ -20,3 +20,25 @@
 - Dependencies
     + `springboot`, `jfreechart`, `openCSV`, `json-simple`
 
+# [Capstone design contest(21.09.28 - 21.10.25)](http://e2festa.kr/ko/capstone)
+
+##[Server side](https://github.com/ghchoi0427/Capstone/tree/master/grapher)
+***
+<h3>🧾 Get sensor value from arduino, save as CSV.</br></br>
+📈 Show saved data as chart</br></br>
+📤 Send climate data in designated time(06,12,18).
+</br>
+</br>
+
+##[Client side](https://github.com/ghchoi0427/Capstone)
+***
+<h3>📡 Send sersor value.</br></br>
+📪 get climate data.</h3>
+</br>
+
+- Tech stacks
+    + `Spring framework`, `Java swing`, `arduino`
+
+- Dependencies
+    + `springboot`, `jfreechart`, `openCSV`, `json-simple`
+
